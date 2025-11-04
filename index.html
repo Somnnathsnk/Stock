@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Stock Market Predictor</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1 class="app-title">
+                    <i class="fas fa-chart-line"></i>
+                    Indian Stock Market Predictor
+                </h1>
+            </div>
+            <div class="header-right">
+                <div class="market-status">
+                    <span class="status-indicator active"></span>
+                    <span>Market Open</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <nav class="sidebar-nav">
+                    <button class="nav-item active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </button>
+                    <button class="nav-item" data-section="analysis">
+                        <i class="fas fa-chart-area"></i>
+                        Stock Analysis
+                    </button>
+                    <button class="nav-item" data-section="predictions">
+                        <i class="fas fa-brain"></i>
+                        Predictions
+                    </button>
+                    <button class="nav-item" data-section="portfolio">
+                        <i class="fas fa-briefcase"></i>
+                        Portfolio
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="content-section active">
+                    <div class="section-header">
+                        <h2>Market Overview</h2>
+                        <p class="section-subtitle">Live Indian stock market data and indices</p>
+                    </div>
+
+                    <!-- Market Indices -->
+                    <div class="market-indices">
+                        <div class="index-card" id="nifty-card">
+                            <div class="index-info">
+                                <h3>NIFTY 50</h3>
+                                <div class="index-value">19,389.70</div>
+                                <div class="index-change positive">+0.85%</div>
+                            </div>
+                        </div>
+                        <div class="index-card" id="sensex-card">
+                            <div class="index-info">
+                                <h3>SENSEX</h3>
+                                <div class="index-value">65,344.20</div>
+                                <div class="index-change positive">+0.72%</div>
+                            </div>
+                        </div>
+                        <div class="index-card" id="banknifty-card">
+                            <div class="index-info">
+                                <h3>NIFTY BANK</h3>
+                                <div class="index-value">44,256.35</div>
+                                <div class="index-change positive">+1.12%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Popular Stocks -->
+                    <div class="popular-stocks">
+                        <h3>Popular Indian Stocks</h3>
+                        <div class="stocks-grid" id="stocks-grid">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Market News -->
+                    <div class="news-section">
+                        <h3>Latest Market News</h3>
+                        <div class="news-list" id="news-list">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stock Analysis Section -->
+                <section id="analysis" class="content-section">
+                    <div class="section-header">
+                        <h2>Stock Analysis</h2>
+                        <p class="section-subtitle">Detailed technical analysis and charting</p>
+                    </div>
+
+                    <!-- Stock Search -->
+                    <div class="stock-search">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="stock-search" placeholder="Search Indian stocks (e.g., RELIANCE.NS, TCS.NS)" class="form-control">
+                            <select id="popular-stocks" class="form-control">
+                                <option value="">Select Popular Stock</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Selected Stock Info -->
+                    <div class="selected-stock-info" id="selected-stock-info">
+                        <div class="stock-placeholder">
+                            <p>Please search for a stock or select from popular stocks above to begin analysis.</p>
+                        </div>
+                    </div>
+
+                    <!-- Chart Controls -->
+                    <div class="chart-controls">
+                        <div class="timeframe-buttons">
+                            <button class="btn btn--sm" data-period="1D">1D</button>
+                            <button class="btn btn--sm" data-period="5D">5D</button>
+                            <button class="btn btn--sm active" data-period="1M">1M</button>
+                            <button class="btn btn--sm" data-period="3M">3M</button>
+                            <button class="btn btn--sm" data-period="6M">6M</button>
+                            <button class="btn btn--sm" data-period="1Y">1Y</button>
+                        </div>
+                        <div class="chart-type-buttons">
+                            <button class="btn btn--sm active" data-type="candlestick">Candlestick</button>
+                            <button class="btn btn--sm" data-type="line">Line</button>
+                        </div>
+                    </div>
+
+                    <!-- Stock Chart -->
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                        <canvas id="stock-chart"></canvas>
+                    </div>
+
+                    <!-- Technical Indicators -->
+                    <div class="technical-indicators">
+                        <h4>Technical Indicators</h4>
+                        <div class="indicators-grid" id="indicators-grid">
+                            <div class="indicator-placeholder">
+                                <p>Technical indicators will appear here when you select a stock.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Predictions Section -->
+                <section id="predictions" class="content-section">
+                    <div class="section-header">
+                        <h2>AI Price Predictions</h2>
+                        <p class="section-subtitle">Machine learning powered stock price forecasting</p>
+                    </div>
+
+                    <!-- Stock Selection for Prediction -->
+                    <div class="prediction-stock-selection">
+                        <h4>Select Stock for Prediction</h4>
+                        <select id="prediction-stock-select" class="form-control">
+                            <option value="">Choose a stock to predict</option>
+                        </select>
+                    </div>
+
+                    <!-- Prediction Controls -->
+                    <div class="prediction-controls">
+                        <div class="control-group">
+                            <label for="prediction-horizon">Prediction Horizon (Days)</label>
+                            <select id="prediction-horizon" class="form-control">
+                                <option value="1">1 Day</option>
+                                <option value="7" selected>1 Week</option>
+                                <option value="15">2 Weeks</option>
+                                <option value="30">1 Month</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label for="ml-model">ML Model</label>
+                            <select id="ml-model" class="form-control">
+                                <option value="lstm" selected>LSTM Neural Network</option>
+                                <option value="rf">Random Forest</option>
+                                <option value="xgb">XGBoost</option>
+                                <option value="svr">Support Vector Regression</option>
+                            </select>
+                        </div>
+                        <button class="btn btn--primary" id="predict-btn">
+                            <i class="fas fa-brain"></i>
+                            Predict Price
+                        </button>
+                    </div>
+
+                    <!-- Prediction Results -->
+                    <div class="prediction-results" id="prediction-results">
+                        <div class="loading" id="prediction-loading">
+                            <div class="spinner"></div>
+                            <p>Training model and generating prediction...</p>
+                        </div>
+                        <div class="prediction-output" id="prediction-output">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Model Performance -->
+                    <div class="model-performance" id="model-performance">
+                        <h4>Model Performance Metrics</h4>
+                        <div class="metrics-grid">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Portfolio Section -->
+                <section id="portfolio" class="content-section">
+                    <div class="section-header">
+                        <h2>Portfolio Tracker</h2>
+                        <p class="section-subtitle">Track your investments and watchlist</p>
+                    </div>
+
+                    <!-- Portfolio Summary -->
+                    <div class="portfolio-summary">
+                        <div class="summary-card">
+                            <h4>Total Portfolio Value</h4>
+                            <div class="portfolio-value">₹2,45,680</div>
+                            <div class="portfolio-change positive">+₹3,240 (+1.34%)</div>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Day's P&L</h4>
+                            <div class="portfolio-value">+₹1,890</div>
+                            <div class="portfolio-change positive">+0.78%</div>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Total Returns</h4>
+                            <div class="portfolio-value">+₹15,680</div>
+                            <div class="portfolio-change positive">+6.82%</div>
+                        </div>
+                    </div>
+
+                    <!-- Watchlist -->
+                    <div class="watchlist">
+                        <h4>Watchlist</h4>
+                        <div class="watchlist-table" id="watchlist-table">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Prediction Modal -->
+    <div class="modal hidden" id="prediction-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Prediction Details</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
